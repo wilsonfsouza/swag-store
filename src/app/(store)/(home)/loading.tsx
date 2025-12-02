@@ -1,3 +1,9 @@
+import { FeaturedProductsSkeleton } from '@/components/featured-products-grid/featured-products-skeleton';
+
 export default function HomeLoading() {
-  return <p>Loading..</p>;
+  return (
+    <div>
+      <FeaturedProductsSkeleton />
+    </div>
+  );
 }
