@@ -1,11 +1,11 @@
 import { FeaturedProductsGrid } from '@/components/featured-products-grid';
+import { FeaturedProductsSkeleton } from '@/components/featured-products-grid/featured-products-skeleton';
 import { Suspense } from 'react';
 
 export default async function Home() {
   return (
     <main>
-      <aside>Sidebar</aside>
-      <Suspense fallback={<p>Temporary loading...</p>}>
+      <Suspense fallback={<FeaturedProductsSkeleton />}>
         <FeaturedProductsGrid />
       </Suspense>
     </main>
