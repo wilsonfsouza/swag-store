@@ -6,3 +6,10 @@ export function formatCurrency(price: number) {
     maximumFractionDigits: 0,
   });
 }
+
+export function formatCurrencyWithFractionDigits(price: number) {
+  return price.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+}
