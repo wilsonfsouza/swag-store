@@ -8,7 +8,10 @@ const geistSans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Swag Store',
+  title: {
+    template: '%s | devstore',
+    default: 'devstore',
+  },
   description: 'Store to sell swag merchandise',
 };
 
