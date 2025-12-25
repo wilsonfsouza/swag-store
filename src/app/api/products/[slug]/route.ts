@@ -1,13 +1,17 @@
-import z from 'zod';
+import { NextRequest } from 'next/server';
+import { z } from 'zod';
 import data from '../data.json';
 
-export async function GET(
-  _: Request,
-  { params }: { params: { slug: string } }
-) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+interface RouteContext {
+  params: Promise<{
+    slug: string;
+  }>;
+}
 
-  const slug = z.string().parse(params.slug);
+export async function GET(_: NextRequest, { params }: RouteContext) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const ctxParams = await params;
+  const slug = z.string().parse(ctxParams.slug);
 
   const product = data.products.find((product) => product.slug === slug);
 

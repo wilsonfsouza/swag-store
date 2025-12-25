@@ -1,4 +1,6 @@
 import { getProductBySlug } from '@/app/http/get-product-by-slug';
+import { api } from '@/data/api';
+import { Product } from '@/data/types/product';
 import {
   formatCurrency,
   formatCurrencyWithFractionDigits,
@@ -7,23 +9,34 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const product = await getProductBySlug(params.slug);
+  const ctxParams = await params;
+  const product = await getProductBySlug(ctxParams.slug);
 
   return {
     title: product.title,
   };
 }
 
-export async function ProductPage({ params }: ProductPageProps) {
-  const product = await getProductBySlug(params.slug);
+export async function generateStaticParams() {
+  const response = await api('/products/featured');
+  const products: Product[] = await response.json();
+
+  return products.map((product) => {
+    return { slug: product.slug };
+  });
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const ctxParams = await params;
+  const product = await getProductBySlug(ctxParams.slug);
   return (
     <div className="relative grid max-h-[860px] grid-cols-3">
       <div className="overflow-hidden col-span-2">
@@ -43,15 +56,17 @@ export async function ProductPage({ params }: ProductPageProps) {
           {product.description}
         </p>
 
-        <div className="mt-8 flex items-center gap-3">
-          <span className="inline-block rounded-full bg-violet-500 px-5 pt-2.5 font-semibold">
-            {formatCurrency(product.price)}
-          </span>
-          <span className="text-sm text-zinc-400">
-            Up to 12x installments of{' '}
-            {formatCurrencyWithFractionDigits(product.price / 12)}
-          </span>
-        </div>
+        {!!product.price && (
+          <div className="mt-8 flex items-center gap-3">
+            <span className="inline-block rounded-full bg-violet-500 px-5 pt-2.5 font-semibold">
+              {formatCurrency(product.price)}
+            </span>
+            <span className="text-sm text-zinc-400">
+              Up to 12x installments of{' '}
+              {formatCurrencyWithFractionDigits(product.price / 12)}
+            </span>
+          </div>
+        )}
 
         <div className="mt-8 space-y-4">
           <span className="block font-semibold">Sizes</span>
