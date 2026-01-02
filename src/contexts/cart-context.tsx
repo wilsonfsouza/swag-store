@@ -9,13 +9,13 @@ import {
 } from 'react';
 
 type CartItem = {
-  productId: string;
+  productId: number;
   quantity: number;
 };
 
 interface CartContextProps {
   items: CartItem[];
-  addToCart: (productId: string) => void;
+  addToCart: (productId: number) => void;
 }
 
 const CartContext = createContext({} as CartContextProps);
@@ -27,7 +27,7 @@ interface CartProviderProps {
 export function CartProvider({ children }: CartProviderProps) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addToCart = useCallback((productId: string) => {
+  const addToCart = useCallback((productId: number) => {
     setCartItems((state) => {
       const productInCart = state.some((item) => item.productId === productId);
 
