@@ -1,0 +1,27 @@
+name: Run E2E tests
+
+on: push
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          APP_URL: ${{ secrets.APP_URL }}
+        with:
+          build: npm run build
+          start: npm start
