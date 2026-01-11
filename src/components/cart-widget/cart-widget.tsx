@@ -10,7 +10,7 @@ export const CartWidget = () => {
   return (
     <div className="flex items-center gap-2">
       <ShoppingBag className="size-4" />
-      <span className="text-sm">Cart (${numberOfItems})</span>
+      <span className="text-sm">Cart ({numberOfItems})</span>
     </div>
   );
 };
