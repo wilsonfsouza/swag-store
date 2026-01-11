@@ -12,7 +12,7 @@ export function Header() {
           devstore
         </Link>
 
-        <Suspense>
+        <Suspense fallback={null}>
           <SearchForm />
         </Suspense>
       </div>
